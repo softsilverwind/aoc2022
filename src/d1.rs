@@ -4,7 +4,7 @@ use itertools::Itertools;
 pub fn simple()
 {
     let ans: i32 = BufReader::new(io::stdin()).lines()
-        .map(|line| line.unwrap())
+        .map(|read_line| read_line.unwrap())
         .batching(|iter| {
             let mut sum = 0;
             
@@ -27,7 +27,7 @@ pub fn simple()
 pub fn complex()
 {
     let ans: i32 = BufReader::new(io::stdin()).lines()
-        .map(|line| line.unwrap())
+        .map(|read_line| read_line.unwrap())
         .batching(|iter| {
             let mut sum = 0;
             
