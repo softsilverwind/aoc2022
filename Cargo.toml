@@ -3,7 +3,8 @@ name = "aoc2022"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[features]
+private_git = ["nicole"]
 
 [dependencies]
 macros = { path = "macros" }
@@ -13,3 +14,4 @@ serde_json = "1.0.89"
 anyhow = "1.0.66"
 rayon = "1.6.1"
 derive_more = "0.99.17"
+nicole = { git = "ssh://git@github.com/softsilverwind/nicole.git", tag = "v0.2.1", optional = true }
