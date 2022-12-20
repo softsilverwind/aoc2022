@@ -11,7 +11,7 @@
 //         ...
 //     }
 // }
-macros::gen_aoc_dispatch!{days = 18} 
+macros::gen_aoc_dispatch!{days = 19} 
 
 fn main()
 {
