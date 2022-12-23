@@ -198,6 +198,70 @@ pub fn simple()
     println!("{}", y * 1000 + x * 4 + direction.number());
 }
 
+fn cube_wraparound(mut x: usize, mut y: usize, dir: Direction) -> (usize, usize, Direction)
+{
+    let region_x = if x == 0 { 0 } else { (x-1) / 50 + 1 };
+    let region_y = if y == 0 { 0 } else { (y-1) / 50 + 1 };
+
+    x = (x + 49) % 50 + 1;
+    y = (y + 49) % 50 + 1;
+
+    // Mapping to my specific cube
+    let (nregion_x, nregion_y, nx, ny, ndir) = match (region_x, region_y, dir) {
+        (2, 0, _) => (1, 4, 1, x, Direction::Right), // Teleport to region (1, 4) from left
+        (3, 0, _) => (1, 4, x, 50, Direction::Up), // (1, 4) from down
+        (1, 1, _) => (1, 3, 1, 51-y, Direction::Right), // (1, 3) from left
+        (4, 1, _) => (2, 3, 50, 51-y, Direction::Left), // (2, 3) from right
+        (1, 2, Direction::Left) => (1, 3, y, 1, Direction::Down), // (1, 3) from up
+        (1, 2, Direction::Up) => (2, 2, 1, x, Direction::Right), // (2, 2) from left
+        (3, 2, Direction::Down) => (2, 2, 50, x, Direction::Left), // (2, 2) from right
+        (3, 2, Direction::Right) => (3, 1, y, 50, Direction::Up), // (3, 1) from down
+        (0, 3, _) => (2, 1, 1, 51-y, Direction::Right), // (2, 1) from left
+        (3, 3, _) => (3, 1, 50, 51-y, Direction::Left), // (3, 1) from right
+        (0, 4, _) => (2, 1, y, 1, Direction::Down), // (2, 1) from up    
+        (2, 4, Direction::Right) => (2, 3, y, 50, Direction::Up), // (2, 3) from down
+        (2, 4, Direction::Down) => (1, 4, 50, x, Direction::Left), // (1, 4) from right
+        (1, 5, _) => (3, 1, x, 1, Direction::Down), // (3, 1) from up
+        _ => (region_x, region_y, x, y, dir)
+    };
+
+    ((nregion_x - 1) * 50 + nx, (nregion_y - 1) * 50 + ny, ndir)
+}
+
 pub fn complex()
 {
+    let (field, instructions) = read_input();
+
+    if field.horizontal_bounds.len() < 200 {
+        println!("This should work only on prod database");
+    }
+
+    let (mut x, mut y) = (field.horizontal_bounds[1].0 + 1, 1);
+    let mut direction = Direction::Right;
+
+    for instruction in instructions {
+        match instruction {
+            Instruction::Move(steps) => {
+                for _ in 0..steps {
+                    let (mut xnext, mut ynext) = match direction {
+                        Direction::Up => (x, y-1),
+                        Direction::Left => (x-1, y),
+                        Direction::Down => (x, y+1),
+                        Direction::Right => (x+1, y)
+                    };
+
+                    let ndirection;
+                    (xnext, ynext, ndirection) = cube_wraparound(xnext, ynext, direction);
+
+                    if !field.walls.contains(&(xnext, ynext)) {
+                        (x, y, direction) = (xnext, ynext, ndirection);
+                    }
+                }
+            },
+            Instruction::RotateRight => direction = direction.rotate_right(),
+            Instruction::RotateLeft => direction = direction.rotate_left(),
+        }
+    }
+
+    println!("{}", y * 1000 + x * 4 + direction.number());
 }
