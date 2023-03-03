@@ -178,8 +178,8 @@ dependencies = [
 
 [[package]]
 name = "nicole"
-version = "0.2.1"
-source = "git+ssh://git@github.com/softsilverwind/nicole.git?tag=v0.2.1#9c4ab0d6111174683f9d55dfc3e6e73f568ff8f5"
+version = "0.3.0"
+source = "git+ssh://git@github.com/softsilverwind/nicole.git?tag=v0.3.0#810b4c0021f716587a46c5f6a9eee1b21d0edb0d"
 dependencies = [
  "uuid",
 ]

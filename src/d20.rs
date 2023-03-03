@@ -1,10 +1,7 @@
-#[cfg(feature = "private_git")]
 use std::io::{self, BufRead, BufReader};
 
-#[cfg(feature = "private_git")]
 use nicole::{VecList, ForwardIndex, IndexExt, BackwardIndex};
 
-#[cfg(feature = "private_git")]
 fn solve(decrypt_key: i64, mix_count: usize)
 {
     let mut mason = VecList::new();
@@ -88,13 +85,6 @@ fn solve(decrypt_key: i64, mix_count: usize)
     }
 
     println!("{ans}");
-}
-
-
-#[cfg(not(feature = "private_git"))]
-fn solve(_decrypt_key: i64, _mix_count: usize)
-{
-    println!("Day 20 only works with access to a private project. I intend to make it public at some point");
 }
 
 pub fn simple()
